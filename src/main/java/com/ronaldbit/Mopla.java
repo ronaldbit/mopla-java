@@ -10,8 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Mopla Template Engine
- * 
+ * Mopla Template Engine (archivo único)
+ *
  * Directivas:
  *  - @extend("layout.html") + @section("x") ... @endsection + @yield("x")
  *  - @include("partial.html")
@@ -35,10 +35,10 @@ public class Mopla {
 
     public Mopla(String templatesPath) {
         this.templatesRoot = Paths.get(templatesPath).toAbsolutePath().normalize();
-        // filtros por defecto
-        register("upper", v -> Objects.toString(v, "").toUpperCase());
-        register("lower", v -> Objects.toString(v, "").toLowerCase());
-        register("trim",  v -> Objects.toString(v, "").trim());
+        // filtros por defecto (¡ojo: 2 parámetros en la lambda!)
+        register("upper",  (v, args) -> Objects.toString(v, "").toUpperCase());
+        register("lower",  (v, args) -> Objects.toString(v, "").toLowerCase());
+        register("trim",   (v, args) -> Objects.toString(v, "").trim());
         register("number", (v, args) -> {
             String pat = (args.length > 0 ? args[0] : "#,##0.##");
             DecimalFormat df = new DecimalFormat(pat);
