@@ -51,7 +51,7 @@ Meta: mantener Mopla **simple, rápido y seguro**, con integración fluida en pr
 - Tests básicos por filtro / directiva
 - Sin cambios rompientes
 
-**Completado:** 2025-11-10
+**Completado:** 2025-10-28
 
 ---
 

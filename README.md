@@ -175,5 +175,84 @@ mvn package
 
 Hecho con ❤️ por [@ronaldbit](https://github.com/ronaldbit)
 
+---
+
+## ⚙️ Configuración (env / application.properties / YAML)
+
+Mopla no carga automáticamente archivos de configuración por ahora; la integración con Spring Boot llegará en `v0.5`.
+Ahora (v0.5) incluimos helpers para inicializar Mopla desde `.env`, `application.properties` o `application.yml` con la clase `MoplaConfig`.
+Podés usar `MoplaConfig.fromEnv()`, `MoplaConfig.fromEnvFile(Path)`, `MoplaConfig.fromProperties(Path)` o `MoplaConfig.fromYaml(Path)`.
+
+Mientras tanto, si preferís hacerlo manualmente, podés inicializar la configuración leyendo variables de entorno o archivos `application.properties`/`application.yml` y construir la instancia con `Mopla.builder()`.
+
+Ejemplos de claves sugeridas (no obligatorias):
+
+- Variables de entorno (prefijo `MOPLA_`):
+
+  - `MOPLA_TEMPLATES_ROOT` — ruta al directorio de plantillas (por defecto `.`)
+  - `MOPLA_DEV_MODE` — `true|false` (por defecto `true`)
+  - `MOPLA_CACHE_ENABLED` — `true|false` (por defecto `true`)
+  - `MOPLA_ASSET_PREFIX` — prefijo o base para assets (p. ej. `/static/`)
+
+- `application.properties` / `application.yml` (ejemplo de propiedades):
+
+  application.properties
+  ```properties
+  mopla.templates-root=src/main/resources/templates
+  mopla.dev-mode=true
+  mopla.cache-enabled=true
+  mopla.asset-prefix=/static/
+  ```
+
+  application.yml
+  ```yaml
+  mopla:
+    templates-root: src/main/resources/templates
+    dev-mode: true
+    cache-enabled: true
+    asset-prefix: /static/
+  ```
+
+Ejemplo de inicialización desde variables de entorno (Java puro):
+
+```java
+String root = System.getenv().getOrDefault("MOPLA_TEMPLATES_ROOT", "src/main/resources/templates");
+boolean dev = Boolean.parseBoolean(System.getenv().getOrDefault("MOPLA_DEV_MODE", "true"));
+boolean cache = Boolean.parseBoolean(System.getenv().getOrDefault("MOPLA_CACHE_ENABLED", "true"));
+String assetPrefix = System.getenv().getOrDefault("MOPLA_ASSET_PREFIX", "");
+
+Mopla mopla = Mopla.builder()
+    .templatesRoot(root)
+    .devMode(dev)
+    .cacheEnabled(cache)
+    .setAssetHook(path -> assetPrefix + path)
+    .build();
+```
+
+Ejemplo de lectura desde `application.properties` usando `java.util.Properties`:
+
+```java
+Properties p = new Properties();
+try (InputStream in = Files.newInputStream(Paths.get("application.properties"))) {
+  p.load(in);
+}
+String root = p.getProperty("mopla.templates-root", "src/main/resources/templates");
+boolean dev = Boolean.parseBoolean(p.getProperty("mopla.dev-mode", "true"));
+boolean cache = Boolean.parseBoolean(p.getProperty("mopla.cache-enabled", "true"));
+String assetPrefix = p.getProperty("mopla.asset-prefix", "");
+
+Mopla mopla = Mopla.builder()
+    .templatesRoot(root)
+    .devMode(dev)
+    .cacheEnabled(cache)
+    .setAssetHook(path -> assetPrefix + path)
+    .build();
+```
+
+Notas
+- Si integrás Mopla dentro de una aplicación Spring Boot podés mapear las propiedades a una clase `@ConfigurationProperties` y construir `Mopla` en una `@Configuration` (esto será más directo cuando publiquemos el starter en `v0.5`).
+- `assetHook` es una función simple que recibe la ruta del asset y devuelve la ruta final (puede añadir hashes, CDN, prefix, etc.).
+
+
 
  

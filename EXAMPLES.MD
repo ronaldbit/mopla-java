@@ -10,6 +10,17 @@
 
 src/
 └─ main/
+# 🧪 Ejemplos prácticos de Mopla
+
+Este archivo muestra ejemplos concretos para usar Mopla: layouts, includes, filtros (incl. los nuevos v0.4), `Mopla.builder()`, `@asset` y `@dump`.
+
+---
+
+## 📁 Estructura típica
+
+```
+src/
+└─ main/
 │   └─ java/
 │       └─ com/example/App.java
 └─ resources/
@@ -19,7 +30,7 @@ src/
         ├─ header.html
         └─ footer.html
 
-````
+```
 
 ---
 
@@ -34,7 +45,7 @@ src/
   @include("footer.html")
 </body>
 </html>
-````
+```
 
 ---
 
@@ -93,7 +104,7 @@ src/
 
 ---
 
-## 🧩 App.java
+## 🧩 App.java (ejemplo de uso)
 
 ```java
 import com.ronaldbit.mopla.*;
@@ -105,13 +116,11 @@ public class App {
                 .setDevMode(true)
                 .setCacheEnabled(true);
 
-        // Contexto persistente (tipo Thymeleaf)
         MoplaContext ctx = new MoplaContext();
         ctx.app().put("appName", "Mopla Demo");
         ctx.session().put("usuario", Map.of("nombre", "Ronald"));
         ctx.req().put("csrf", UUID.randomUUID().toString());
 
-        // Variables locales de esta vista
         Map<String,Object> vars = new HashMap<>();
         vars.put("title", "Usuarios");
         vars.put("showMessage", true);
@@ -127,7 +136,7 @@ public class App {
 
 ---
 
-## 🧾 Salida
+## 🧾 Salida esperada
 
 ```html
 <html>
@@ -154,4 +163,79 @@ public class App {
 </body>
 </html>
 ```
- 
+
+---
+
+## ✨ Ejemplos v0.4 (filtros, builder, @asset, @dump)
+
+### Filtros nuevos
+
+```html
+<p>Título: @var(title|capitalize)</p>
+<p>Resumen: @var(longText|truncate:20)</p>
+<p>Reemplazo: @var(text|replace:foo:bar)</p>
+<p>Split como texto: @var(csv|split:,)</p>
+```
+
+> Nota: `split` devuelve una representación de array como String (por compatibilidad con la firma actual de filtros).
+
+### Uso del builder (fluent)
+
+```java
+Mopla m = Mopla.builder()
+    .templatesRoot("src/main/resources/templates")
+    .devMode(true)
+    .cacheEnabled(true)
+    .setAssetHook(path -> "/static/" + path + "?v=123")
+    .putGlobal("site", "Mi Site")
+    .build();
+
+String html = m.render("home.html", Map.of("title","hola mundo"));
+```
+
+### `@asset` — hook para versionado / hashing
+
+Plantilla:
+```html
+<link rel="stylesheet" href="@asset(\"css/app.css\")">
+```
+
+Con el `assetHook` en el builder el resultado puede ser:
+
+```html
+<link rel="stylesheet" href="/static/css/app.css?v=123">
+```
+
+### `@dump` — depuración rápida (solo en `devMode`)
+
+Plantilla:
+```html
+@dump(user)
+```
+
+Salida en `devMode=true`:
+
+```html
+<pre>{name: "Juan", roles: ["admin","user"]}</pre>
+```
+
+### Registrar un filtro custom y `renderString`
+
+```java
+mopla.register("reverse", (v,a) -> new StringBuilder(String.valueOf(v)).reverse().toString());
+String out = mopla.renderString("<p>@var(name|reverse)</p>", Map.of("name","Ronald"));
+// => <p>dlanoR</p>
+```
+
+---
+
+## ▶️ Try it (rápido)
+
+Desde la raíz del proyecto:
+
+```bash
+mvn -q -DskipTests package
+java -cp target/classes:target/dependency/* com.example.App
+```
+
+
