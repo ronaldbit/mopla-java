@@ -1,6 +1,6 @@
 # 🗺️ Roadmap — Mopla Template Engine
 
-Estado actual: **v0.4.0**  
+Estado actual: **v0.5.0**  
 Meta: mantener Mopla **simple, rápido y seguro**, con integración fluida en proyectos Java/Spring.
 
 ---
@@ -19,6 +19,12 @@ Meta: mantener Mopla **simple, rápido y seguro**, con integración fluida en pr
 	- Macro de depuración `@dump(x)` (solo en `devMode`) y `TemplateUtils.dump(...)`.
 	- Infra: `TemplateProcessor` y `TemplateCache` actualizados para soportar devMode/assetHook.
 	- Compilación verificada (build local) y cambios integrados en el repo.
+
+## ✅ Hecho (v0.5.0)
+- Helpers de configuración: `MoplaConfig` para inicializar Mopla desde `.env`, `application.properties` o `application.yml` (`fromEnv()`, `fromEnvFile(...)`, `fromProperties(...)`, `fromYaml(...)`).
+- Documentación actualizada (`README.md`, `EXAMPLES.md`) con ejemplos de `.env`, properties/yaml y `Mopla.builder()`.
+- Soporte para inicializar Mopla desde variables de entorno y archivos de configuración (helpers, no carga automática en runtime fuera del helper).
+
 
 ---
 
