@@ -29,4 +29,19 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <!-- Spring MVC for v0.5 integration (View/Resolver interfaces) -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>6.0.15</version>
+    </dependency>
+    <!-- servlet API needed for compilation; provided at runtime by servlet container -->
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 </project>

@@ -1,6 +1,7 @@
 package com.ronaldbit.mopla;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
@@ -111,6 +112,13 @@ public class Mopla {
   /* ===== IO ===== */
 
   private String readFile(String file) throws IOException {
+    // Soporte para classpath:resource (ej. classpath:templates/home.html)
+    if (file != null && file.startsWith("classpath:")) {
+      String res = file.substring("classpath:".length());
+      InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(res.startsWith("/") ? res.substring(1) : res);
+      if (in == null) return "";
+      try (in) { return new String(in.readAllBytes(), StandardCharsets.UTF_8); }
+    }
     Path p = templatesRoot.resolve(file).normalize();
     if (!p.startsWith(templatesRoot)) throw new SecurityException("Archivo fuera de templates: " + file);
     return cache.readFileCached(p);

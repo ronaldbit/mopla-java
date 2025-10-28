@@ -10,6 +10,46 @@
 
 src/
 └─ main/
+
+---
+
+## 🧩 Spring MVC demo (v0.5)
+
+Pequeño ejemplo que muestra cómo integrar Mopla en una app Spring MVC registrando un `ViewResolver`.
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+  @Bean
+  public Mopla mopla() {
+    // Inicializa desde .env, application.properties o valores por defecto
+    return com.ronaldbit.MoplaConfig.fromEnv();
+  }
+
+  @Bean
+  public ViewResolver moplaViewResolver(Mopla mopla) {
+    return new com.ronaldbit.spring.MoplaViewResolver(mopla);
+  }
+}
+```
+
+Y un `Controller` mínimo:
+
+```java
+@Controller
+public class HomeController {
+  @GetMapping("/")
+  public String home(Model m) {
+    m.addAttribute("title","Inicio");
+    return "home"; // se resolverá a home.html por MoplaViewResolver
+  }
+}
+```
+
+Notas:
+- `MoplaViewResolver` añade la extensión `.html` por defecto (configurable).
+- `MoplaView` convierte `HttpSession` y parámetros a `MoplaContext` automáticamente.
+
 # 🧪 Ejemplos prácticos de Mopla
 
 Este archivo muestra ejemplos concretos para usar Mopla: layouts, includes, filtros (incl. los nuevos v0.4), `Mopla.builder()`, `@asset` y `@dump`.

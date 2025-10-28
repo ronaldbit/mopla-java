@@ -1,3 +1,4 @@
+/workspaces/mopla-java/src/main/java/com/ronaldbit/spring/MoplaView.java
 /workspaces/mopla-java/src/main/java/com/ronaldbit/TemplateUtils.java
 /workspaces/mopla-java/src/main/java/com/ronaldbit/MoplaContext.java
 /workspaces/mopla-java/src/main/java/com/ronaldbit/Mopla.java
@@ -5,5 +6,6 @@
 /workspaces/mopla-java/src/main/java/com/ronaldbit/TemplateCache.java
 /workspaces/mopla-java/src/main/java/com/ronaldbit/Patterns.java
 /workspaces/mopla-java/src/main/java/com/ronaldbit/TemplateProcessor.java
-/workspaces/mopla-java/src/main/java/com/ronaldbit/mopla/MoplaConfig.java
+/workspaces/mopla-java/src/main/java/com/ronaldbit/MoplaConfig.java
+/workspaces/mopla-java/src/main/java/com/ronaldbit/spring/MoplaViewResolver.java
 /workspaces/mopla-java/src/main/java/com/ronaldbit/Filter.java

@@ -65,10 +65,10 @@ Meta: mantener Mopla **simple, rápido y seguro**, con integración fluida en pr
 **Objetivo:** usar Mopla como motor de vistas en Spring MVC.
 
 **Alcance**
-- [ ] `MoplaView` y `MoplaViewResolver` (similar a ThymeleafViewResolver)
-- [ ] Adaptador de `MoplaContext` desde `HttpSession` y `WebRequest`
-- [ ] Soporte `classpath:` en `templatesRoot`
-- [ ] Ejemplo `spring-boot-demo` (módulo sample)
+- [x] `MoplaView` y `MoplaViewResolver` (similar a ThymeleafViewResolver)
+- [x] Adaptador de `MoplaContext` desde `HttpSession` y `WebRequest` (básico)
+- [x] Soporte `classpath:` en `templatesRoot`
+- [x] Ejemplo `spring-boot-demo` (snippet en `EXAMPLES.md`)
 
 **Criterios de aceptación**
 - Demo corriendo con `@Controller` devolviendo nombres de vista
